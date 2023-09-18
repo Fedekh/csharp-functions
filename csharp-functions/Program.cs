@@ -17,7 +17,58 @@ namespace csharpFunction
 
             Console.WriteLine($"La somma di tutti gli elementi dell array i cui elementi sono quadrati dell'array di partenza è {sommaElementiArray(ElevaArrayAlQuadrato(mioArray))}");
 
+
+            Console.WriteLine("");
+            Console.WriteLine("");
+            Console.WriteLine("PROVIAMO LE FUNZIONI GENERICHE ORA");
+            bool correct = false ;
+            int number=0;
+            while (!correct)
+            {
+                Console.WriteLine("Inserisci un numero per dare la dimensione dell'array di partenza");
+                string numero = Console.ReadLine();
+                if (int.TryParse(numero, out number))
+                {
+                    correct = true;
+                }
+            }
+
+            int[] NuovoArrayGenerico = new int[number];
+            for (int i = 0; i < number; i++)
+            {
+                NuovoArrayGenerico[i] = new Random().Next(1,80);
+            }
+
+            Console.WriteLine($"Ora il nuovo Array che mi hai fornito è di {number} elementi casuali");
+            GenericStampaArray(NuovoArrayGenerico);
+            Console.WriteLine("");
+            Console.WriteLine($"La somma di tutti gli elementi dell'array nuovo di partenza è {GenericSommaElementi(NuovoArrayGenerico)}");
+            Console.WriteLine("");
+            Console.WriteLine($"La somma di tutti gli elementi dell array i cui elementi sono quadrati dell'array di partenza è {GenericSommaElementi(GenericElevaArrayAlQuadrato(NuovoArrayGenerico))}");
+            Console.WriteLine("");
+
+
+
+
+
+
+
         }
+
+        static void GenericStampaArray<T>(T[] array)
+        {
+            Console.Write("[");
+            for (int i = 0; i < array.Length; i++)
+            {
+                Console.Write($"{array[i]}");
+                if (i < array.Length - 1)
+                {
+                    Console.Write(", ");
+                }
+            }
+            Console.WriteLine("]");
+        }
+
         static void StampaArray(int[] array)
         {
             Console.Write("[");
@@ -31,15 +82,34 @@ namespace csharpFunction
             }
             Console.WriteLine("]");
         }
+
+        static T GenericQuadrato<T>(T valore)
+        {
+            dynamic n = valore;
+            return n * n;
+
+        }
         static int Quadrato(int numero)
         {
             int risultato = numero * numero;
             return risultato;
         }
+
+        static T[] GenericElevaArrayAlQuadrato<T>(T[] array )
+        {
+            T[] arr = new T[array.Length];
+            for(int i = 0;i < array.Length; i++)
+            {
+                arr[i] = GenericQuadrato(array[i]);
+            }
+            GenericStampaArray(arr);
+            return arr;
+        }
         static int[] ElevaArrayAlQuadrato(int[] array) 
         {
-            int[] arr = new int[array.Length];
-            for (int i = 0; i < array.Length; i++)
+        
+         int[] arr = new int[array.Length];
+          for (int i = 0; i < array.Length; i++)
             {
                 arr[i] = Quadrato(array[i]);
 
@@ -48,6 +118,17 @@ namespace csharpFunction
             StampaArray(arr);
 
             return arr;
+        }
+
+        static T GenericSommaElementi<T>(T[] array)
+        {
+            dynamic result = 0;
+            for (int i = 0; i < array.Length; i++)
+            {
+                result += array[i];
+            }
+            return result;
+
         }
 
         static int sommaElementiArray(int[] array)
